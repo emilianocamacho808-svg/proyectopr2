@@ -22,3 +22,14 @@ class GestorPersistencia:
             return jugador, enemigo
         except FileNotFoundError:
             return None, None
+
+    @staticmethod
+    def exportar_historial_csv(historial_ataques, archivo="historial.csv"):
+        with open(archivo, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f, delimiter=';')
+            writer.writerow(["Turno", "Atacante", "Defensor", "Daño (HP)", "Efectividad"])
+            for turno, atacante, defensor, dano, mult in historial_ataques:
+                efectividad_texto = "Normal"
+                if mult > 1.0: efectividad_texto = "Súper Efectivo"
+                elif mult < 1.0: efectividad_texto = "Poco Efectivo"
+                writer.writerow([f"#{turno}", atacante, defensor, f"-{dano}", efectividad_texto])
