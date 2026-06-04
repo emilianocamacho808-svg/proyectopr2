@@ -16,3 +16,22 @@ class TestSistemaBatalla(unittest.TestCase):
         self.criatura_fuego.hp_actual = 500
         self.assertEqual(self.criatura_fuego.hp_actual, 100)
 
+    def test_efectividad_tipos(self):
+        """Prueba el cálculo de daño con multiplicadores."""
+        # Fuego contra Planta = x2.0
+        mult = self.sistema.calcular_multiplicador("Fuego", "Planta")
+        self.assertEqual(mult, 2.0)
+
+    def test_excepcion_personalizada(self):
+        """Prueba que el sistema levante la excepción si una criatura está debilitada."""
+        self.criatura_fuego.hp_actual = 0
+        with self.assertRaises(CriaturaDebilitadaError):
+            self.sistema.ejecutar_ataque(self.criatura_fuego, self.criatura_planta)
+
+    def test_metodo_especial_str(self):
+        """Prueba el dunder method __str__."""
+        representacion = str(self.criatura_fuego)
+        self.assertEqual(representacion, "Ignis (Fuego) - HP: 100/100")
+
+if __name__ == '__main__':
+    unittest.main()
