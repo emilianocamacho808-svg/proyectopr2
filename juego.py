@@ -46,4 +46,30 @@ class Juego:
         except CriaturaDebilitadaError as error:
             return str(error)
 
-   
+    def ejecutar(self):
+        run = True
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: run = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if not self.ganador:
+                        for btn in self.botones:
+                            if btn.es_clickeado(event.pos):
+                                self.mensaje = self.turno_grafico(self.jugador, self.enemigo, btn.texto)
+                                if self.enemigo.esta_vivo():
+                                    atk_e = random.choice(self.enemigo.ataques)
+                                    self.mensaje += f" | {self.turno_grafico(self.enemigo, self.jugador, atk_e)}"
+                                    if not self.jugador.esta_vivo(): self.ganador = "¡EL RIVAL GANA!"
+                                else:
+                                    self.ganador = "¡HAS GANADO!"
+                    else:
+                        if self.btn_reiniciar.es_clickeado(event.pos): self.reset_batalla()
+                        elif self.btn_guardar.es_clickeado(event.pos):
+                            GestorPersistencia.guardar_estado_json(self.jugador, self.enemigo)
+                            GestorPersistencia.exportar_historial_csv(self.historial_ataques)
+                        elif self.btn_salir.es_clickeado(event.pos): run = False
+
+            self.pantalla.fill((245, 245, 250))
+            
+            pygame.display.flip()
+        pygame.quit()
