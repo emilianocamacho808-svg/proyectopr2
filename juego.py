@@ -69,7 +69,51 @@ class Juego:
                             GestorPersistencia.exportar_historial_csv(self.historial_ataques)
                         elif self.btn_salir.es_clickeado(event.pos): run = False
 
+            # =========================================================================
+            # SECCIÓN DE DIBUJO CON REBORDES COLORIDOS ACTUALIZADA
+            # =========================================================================
+            # 1. Limpiamos la pantalla pintándola con el fondo gris claro
             self.pantalla.fill((245, 245, 250))
             
+            # --- TARJETA DEL JUGADOR (Borde Azul) ---
+            caja_jugador = pygame.Rect(40, 30, 320, 80)
+            # Fondo azul muy clarito para el interior
+            pygame.draw.rect(self.pantalla, (230, 240, 255), caja_jugador)
+            # Reborde azul fuerte (Grosor 3)
+            pygame.draw.rect(self.pantalla, (0, 102, 204), caja_jugador, 3)
+            
+            # Datos del Jugador impresos dentro de su recuadro azul
+            self.pantalla.blit(self.fuente.render(f"{self.jugador.nombre} ({self.jugador.tipo})", True, (0, 0, 100)), (55, 45))
+            self.pantalla.blit(self.fuente.render(f"HP: {self.jugador.hp_actual}", True, (0, 0, 100)), (55, 75))
+
+            # --- TARJETA DEL RIVAL (Borde Rojo) ---
+            caja_rival = pygame.Rect(440, 30, 320, 80)
+            # Fondo rojo muy clarito para el interior
+            pygame.draw.rect(self.pantalla, (255, 230, 230), caja_rival)
+            # Reborde rojo fuerte (Grosor 3)
+            pygame.draw.rect(self.pantalla, (204, 0, 0), caja_rival, 3)
+
+            # Datos del Rival impresos dentro de su recuadro rojo
+            self.pantalla.blit(self.fuente.render(f"{self.enemigo.nombre} ({self.enemigo.tipo})", True, (100, 0, 0)), (455, 45))
+            self.pantalla.blit(self.fuente.render(f"HP: {self.enemigo.hp_actual}", True, (100, 0, 0)), (455, 75))
+
+            # --- CAJA DE HISTORIAL NARRATIVO ---
+            caja_historial = pygame.Rect(40, 330, 720, 60)
+            pygame.draw.rect(self.pantalla, (235, 235, 235), caja_historial) 
+            pygame.draw.rect(self.pantalla, (140, 140, 140), caja_historial, 3) 
+            self.pantalla.blit(self.fuente.render(self.mensaje, True, (40, 40, 40)), (50, 350))
+            
+            # Botones interactivos según el estado del juego
+            if not self.ganador:
+                for btn in self.botones: 
+                    btn.dibujar(self.pantalla, self.fuente)
+            else:
+                self.pantalla.blit(self.fuente.render(self.ganador, True, (0, 150, 0)), (330, 180))
+                self.btn_reiniciar.dibujar(self.pantalla, self.fuente)
+                self.btn_guardar.dibujar(self.pantalla, self.fuente)
+                self.btn_salir.dibujar(self.pantalla, self.fuente)
+
+            # Forzamos a Pygame a renderizar los cambios en la ventana
             pygame.display.flip()
+            
         pygame.quit()
