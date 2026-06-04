@@ -1,0 +1,8 @@
+{
+  "Fuego": {"ataques": ["Llamarada", "Ascuas"], "debiles_contra": {"Agua": 0.5, "Tierra": 0.5}, "fuertes_contra": {"Planta": 2.0}},
+  "Agua": {"ataques": ["Hidrobomba", "Pistola Agua"], "debiles_contra": {"Planta": 0.5}, "fuertes_contra": {"Fuego": 2.0, "Tierra": 2.0}},
+  "Planta": {"ataques": ["Latigazo", "Hoja Afilada"], "debiles_contra": {"Fuego": 0.5, "Volador": 0.5}, "fuertes_contra": {"Agua": 2.0, "Tierra": 2.0}},
+  "Electrico": {"ataques": ["Impactrueno", "Rayo"], "debiles_contra": {"Tierra": 0.0, "Planta": 0.5}, "fuertes_contra": {"Agua": 2.0, "Volador": 2.0}},
+  "Tierra": {"ataques": ["Terremoto", "Lanzarrocas"], "debiles_contra": {"Planta": 0.5, "Volador": 0.0}, "fuertes_contra": {"Fuego": 2.0, "Electrico": 2.0}},
+  "Volador": {"ataques": ["Picotazo", "Tornado"], "debiles_contra": {"Electrico": 0.5}, "fuertes_contra": {"Planta": 2.0}}
+}
