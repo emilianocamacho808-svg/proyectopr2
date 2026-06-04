@@ -22,3 +22,28 @@ class Juego:
         self.historial_ataques = []
         self.reset_batalla()
 
+    def reset_batalla(self):
+        c1, c2 = random.sample(self.pool, 2)
+        ataques_c1 = self.sistema_combate.tabla_tipos[c1[1]]["ataques"]
+        ataques_c2 = self.sistema_combate.tabla_tipos[c2[1]]["ataques"]
+
+        self.jugador = Criatura(c1[0], c1[1], 100, ataques_c1)
+        self.enemigo = Criatura(c2[0], c2[1], 100, ataques_c2)
+        self.mensaje = "¡Batalla iniciada!"
+        self.ganador = None
+        self.historial_ataques.clear()
+        self.botones = [
+            Boton(50, 450, 200, 50, self.jugador.ataques[0], (220, 220, 220)),
+            Boton(300, 450, 200, 50, self.jugador.ataques[1], (220, 220, 220))
+        ]
+
+    def turno_grafico(self, atacante, defensor, nombre_ataque):
+        try:
+            dano, mult = self.sistema_combate.ejecutar_ataque(atacante, defensor)
+            texto = "¡Súper efectivo!" if mult > 1 else "Poco efectivo..." if mult < 1 else ""
+            self.historial_ataques.append(["Turno", atacante.nombre, defensor.nombre, dano, mult])
+            return f"{atacante.nombre} usó {nombre_ataque}. {texto}"
+        except CriaturaDebilitadaError as error:
+            return str(error)
+
+   
